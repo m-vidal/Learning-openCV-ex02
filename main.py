@@ -43,7 +43,10 @@ if in_frame is not None:
         
         box = detections[0, 0, i, 3:7] * np.array([width, height, width, height])
         x1, y1, x2, y2 = box.astype("int")
-
         cv2.rectangle(frame_rgb, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        
+
+    roi = frame_rgb[y1:y2, x1:x2]
+    blur_roi = cv2.GaussianBlur(roi, (99, 99), 30)
+    frame_rgb[y1:y2, x1:x2] = blur_roi
     st.image(frame_rgb, caption="Result", width=700)
+
